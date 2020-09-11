@@ -1,3 +1,4 @@
+mod testes;
 use std::{env, error, fs, process};
 
 pub fn init() {
@@ -13,14 +14,14 @@ pub fn init() {
         process::exit(1);
     };
 }
-pub struct Config {
-    pub query: String,
-    pub filename: String,
-    pub case_sensitive: bool,
+struct Config {
+    query: String,
+    filename: String,
+    case_sensitive: bool,
 }
 
 impl Config {
-    pub fn new(args: &Vec<String>) -> Result<Config, &'static str> {
+    fn new(args: &Vec<String>) -> Result<Config, &'static str> {
         if args.len() < 3 {
             return Err("not enough arguments");
         }
@@ -38,7 +39,7 @@ impl Config {
     }
 }
 
-pub fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
+fn run(config: Config) -> Result<(), Box<dyn error::Error>> {
     let contents = fs::read_to_string(config.filename)?;
 
     let result = if config.case_sensitive {
@@ -75,37 +76,4 @@ pub fn search_case_insensitive<'res>(query: &str, contents: &'res str) -> Vec<&'
         }
     }
     response
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn case_sensitive() {
-        let query = "duct";
-        let contents = "\
-        Rust:
-        safe, fast, productive.
-        Pick three.
-        Duct tape.";
-
-        assert_eq!(
-            vec!["safe, fast, productive."],
-            super::search(query, contents)
-        );
-    }
-
-    #[test]
-    fn case_insensitive() {
-        let query = "rUsT";
-        let contents = "\
-        Rust:
-        safe, fast, productive.
-        Pick three.
-        Trust me.";
-
-        assert_eq!(
-            vec!["Rust:", "Trust me."],
-            super::search_case_insensitive(query, contents)
-        );
-    }
 }
