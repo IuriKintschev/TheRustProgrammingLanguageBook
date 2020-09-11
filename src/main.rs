@@ -1,8 +1,7 @@
-mod scripts;
-use scripts::cache::generate_workout;
-fn main() {
-    let simulated_user_specified_value = 10;
-    let simulated_random_number = 7;
+mod search;
 
-    generate_workout(simulated_user_specified_value, simulated_random_number);
+use search::init;
+
+fn main() {
+    init();
 }
