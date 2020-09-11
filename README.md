@@ -1,4 +1,4 @@
-# The Rust Programming Language book
+# Rust language learning book
 
 ### This repository is dedicated to learning the Rust language with the book "The Rust Programming Language book"
 
