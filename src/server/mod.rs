@@ -9,7 +9,7 @@ pub fn init() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
     let pool = ThreadPool::new(4);
 
-    // loop from conections
+    // loop from connections
     for stream in listener.incoming() {
         let stream = stream.unwrap();
 
@@ -27,7 +27,7 @@ fn handle_connection(mut stream: TcpStream) {
     let get = b"GET / HTTP/1.1\r\n";
     let sleep = b"GET /sleep HTTP/1.1\r\n";
 
-    // reponses
+    // responses
     let (status_line, filename) = if buffer.starts_with(get) {
         ("HTTP/1.1 200 OK\r\n\r\n", "hello.html")
     } else if buffer.starts_with(sleep) {
@@ -41,7 +41,7 @@ fn handle_connection(mut stream: TcpStream) {
     // read file body
     let contents = fs::read_to_string(filename).unwrap();
 
-    // reeponse concat with status request
+    // response concat with status request
     let response = format!("{}{}", status_line, contents);
 
     stream.write(response.as_bytes()).unwrap();
